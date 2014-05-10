@@ -1,0 +1,46 @@
+//tuts:
+//nodeJs for beginners.. we need to do EVERYTHING
+//http://net.tutsplus.com/tutorials/javascript-ajax/node-js-for-beginners/
+
+//offical nodejs dev guide 
+//http://nodemanual.org/latest/nodejs_dev_guide/reading_and_writing_files.html
+
+//express
+//http://expressjs.com/api.html
+
+//nodeJs express rest server (basics, for people with 0 knowlegde)
+//http://blog.modulus.io/nodejs-and-express-create-rest-api
+
+//clustering
+http://nodejs.org/docs/latest/api/cluster.html
+
+//Sequelize
+http://sequelizejs.com
+
+
+once a release version is created, we need to write migrations using the sequelize command line utility:
+
+"sequelize"
+
+'-e, --env <environment>', 'Specify the environment.'
+'-m, --migrate', 'Run pending migrations.'
+'-u, --undo', 'Undo the last migration.'
+'-c, --create-migration [migration-name]', 'Creates a new migration.'
+
+create new migration: //(YOU STILL HAVE TO CODE THESE OUT, YOU JUST SPECIFY THE MIGRATION NAME  WITH THESE COMMANDS)
+sequelize -c createCheese
+sequelize -c alterCheese
+sequelize -c dropCheese
+
+run migrations:
+sequelize -m
+
+set environment (default is development):
+sequelize -e development
+sequelize -e test
+sequelize -e production
+
+Migrations create two tables SequelizeMeta and sqlite/postgres/mysql _sequence
+We can use these to see in what state the Database currently is. :-)
+
+

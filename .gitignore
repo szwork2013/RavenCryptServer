@@ -1,0 +1,20 @@
+#nodejs
+/node_modules/*
+/npm-debug.log
+
+#macos filesystem metafiles
+*.DS_Store
+
+#Jet brains
+.idea
+
+#Sqlite devDB
+/RavenCrypt.sqlite
+/RavenCryptTest.sqlite
+
+#UploadedFiles
+/files/*/*
+
+#logs and analytics
+/logs/
+/analytics.json
