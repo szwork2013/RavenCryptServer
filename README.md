@@ -45,8 +45,11 @@ If you want to host a bigger/public setup feel free to dig into the config and r
 
 Next you need to run:
 
+    (some sub modules may require root access so be sure to run install as root)
+
     //first run:
     npm install
+
     //update:
     npm update
 
