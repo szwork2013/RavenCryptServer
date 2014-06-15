@@ -89,7 +89,7 @@ exports.testUserRegister = function(test){
             .build({
                 name: "bbbbbbbbbb",
                 activationCode: activationCode,
-                key: publicKeyArmored,
+                publicKeyText: publicKeyArmored,
                 keyID: keyID,
                 profile: signedProfile,
                 ip: "0.0.0.0",
@@ -115,7 +115,7 @@ exports.testUserKey = function(test){
         global.model.UserKey
             .build({
                 user: "ccc_ccc",
-                key: publicKeyArmored,
+                publicKeyText: publicKeyArmored,
                 id: keyID
             })
             .save()
