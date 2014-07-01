@@ -23,7 +23,7 @@ var pjson = require("./package.json");
 config.version = pjson.version;
 
 //crypto libs
-require("./lib/crypto.js")
+require("./lib/crypto.js");
 
 //small helper library, full of useful JS functions.
 require("./lib/helper.js");
