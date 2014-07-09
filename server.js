@@ -11,7 +11,7 @@ global.config.validations = require("./config/validations.js");
 var TLSOptions = require("./config/TSLOptions.js");
 
 //next lets set up our logger so we can see whats going on
-require("./lib/logger.js")
+require("./lib/logger.js");
 
 //protocol libraries
 //var http = require('http');
