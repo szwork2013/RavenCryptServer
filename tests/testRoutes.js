@@ -141,19 +141,19 @@ function syncFinished(callback) {
 //response tester.. evil little function to test the routes.
 //extend when necessary, or build something better :-)
 var Response = function(test) {
+    var responseScope = this;
     //private:
     function parseArgs(caller, args) {
         //this is crazy. love that this works :-)
-        if(args.length > 1) {
-            caller.status = args[0];
-            caller.userMsg = args[1];
-        } else if(args.length > 0){
-            caller.status = 200;
+        if(args.length > 0){
             caller.userMsg = args[0];
         }
     }
     //public:
-    this.status = 0;
+    this._status = 0;
+    this.status = function(_status){
+        responseScope._status = _status;
+    };
     this.userMsg = null;
     this.isJson = false;
 
@@ -168,7 +168,7 @@ var Response = function(test) {
 
 
     this.callback = function(res){
-        switch(res.status)
+        switch(res._status)
         {
             case 200:
                 if(this.isJson) {
