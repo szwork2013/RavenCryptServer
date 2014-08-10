@@ -218,8 +218,9 @@ function startServer() {
 
     try {
         var workerID = "";
-        if (cluster.isWorker)
+        if (cluster.isWorker) {
             workerID = cluster.worker.id + ": ";
+        }
 
         global.server.listen(config.web.portHTTPS);
         global.logger.info(workerID + "RavenCrypt Server Server listening on https://127.0.0.1:" + config.web.portHTTPS);
