@@ -88,7 +88,7 @@ var encryptionTest = "jn3AzMDORq2hk54MrzB5Rl2RIfVj";
 
 var options = {
     storeKeysOnServer: false,
-    useLocalEncryption: true
+    encryptionID: encryptionID
 };
 text = JSON.stringify(options);
 var signedOptions = global.openpgp.signClearMessage(parsedPrivateKeys.keys, text);
@@ -104,7 +104,6 @@ exports.testUserRegister = function(test){
                 publicKeyText: publicKeyArmored,
                 keyID: keyID,
                 profile: signedProfile,
-                encryptionID: encryptionID,
                 encryptionVersion: encryptionVersion,
                 encryptionTest: encryptionTest,
                 RCoptions: signedOptions,

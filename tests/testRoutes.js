@@ -106,7 +106,7 @@ var encryptionTest = "jn3AzMDORq2hk54MrzB5Rl2RIfVj";
 
 var options = {
     storeKeysOnServer: false,
-    useLocalEncryption: true
+    encryptionID: encryptionID
 };
 text = JSON.stringify(options);
 var signedOptions = global.openpgp.signClearMessage(parsedPrivateKeys.keys, text);
@@ -248,7 +248,6 @@ exports.testRouteRegister = function(test){
             req.body.key = publicKeyArmored;
             req.body.keyID = keyID;
             req.body.mail = mail;
-            req.body.encryptionID = encryptionID;
             req.body.encryptionVersion = encryptionVersion;
             req.body.encryptionTest = encryptionTest;
             req.body.options = signedOptions;
@@ -299,7 +298,6 @@ exports.testRouteRegisterConfirm = function(test){
             req.body.key = publicKeyArmored;
             req.body.keyID = keyID;
             req.body.mail = mail;
-            req.body.encryptionID = encryptionID;
             req.body.encryptionVersion = encryptionVersion;
             req.body.encryptionTest = encryptionTest;
             req.body.options = signedOptions;
@@ -400,7 +398,6 @@ exports.testRouteRegisterConfirmLogin = function(test){
                 req.body.key = publicKeyArmored;
                 req.body.keyID = keyID;
                 req.body.mail = mail;
-                req.body.encryptionID = encryptionID;
                 req.body.encryptionVersion = encryptionVersion;
                 req.body.encryptionTest = encryptionTest;;
                 req.body.options = signedOptions;
