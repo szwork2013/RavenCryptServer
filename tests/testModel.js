@@ -81,6 +81,18 @@ var text = JSON.stringify(profile);
 var parsedPrivateKeys = global.openpgp.key.readArmored(privateKeyArmored);
 var signedProfile = openpgp.signClearMessage(parsedPrivateKeys.keys, text);
 
+
+var encryptionID = "84922bff-ce5a-4e38-b537-c51316a5445b";
+var encryptionVersion = 1;
+var encryptionTest = "jn3AzMDORq2hk54MrzB5Rl2RIfVj";
+
+var options = {
+    storeKeysOnServer: false,
+    useLocalEncryption: true
+};
+text = JSON.stringify(options);
+var signedOptions = global.openpgp.signClearMessage(parsedPrivateKeys.keys, text);
+
 exports.testUserRegister = function(test){
 
     syncFinished(function(){
@@ -92,6 +104,10 @@ exports.testUserRegister = function(test){
                 publicKeyText: publicKeyArmored,
                 keyID: keyID,
                 profile: signedProfile,
+                encryptionID: encryptionID,
+                encryptionVersion: encryptionVersion,
+                encryptionTest: encryptionTest,
+                RCoptions: signedOptions,
                 ip: "0.0.0.0",
                 mail: "a@b.c"
             })

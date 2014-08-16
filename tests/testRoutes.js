@@ -21,6 +21,12 @@ require("../lib/logger.js");
 //crypto libs
 require("../lib/crypto.js");
 
+//message constants
+require("../lib/constants.js");
+
+//load the validation
+require("../lib/validations.js");
+
 global.db = require("../lib/db.js");
 require("../lib/model.js");
 
@@ -30,11 +36,6 @@ require("../lib/app.js");
 //my little evil helpers.. :-)
 require("../lib/helper.js");
 
-//message constants
-require("../lib/constants.js");
-
-//load the validation
-require("../lib/validations.js");
 
 var http = require('http');
 var httpServer = http.createServer(global.app);
@@ -99,6 +100,18 @@ var text = JSON.stringify(profile);
 var parsedPrivateKeys = global.openpgp.key.readArmored(privateKeyArmored);
 var signedProfile = global.openpgp.signClearMessage(parsedPrivateKeys.keys, text);
 
+var encryptionID = "84922bff-ce5a-4e38-b537-c51316a5445b";
+var encryptionVersion = 1;
+var encryptionTest = "jn3AzMDORq2hk54MrzB5Rl2RIfVj";
+
+var options = {
+    storeKeysOnServer: false,
+    useLocalEncryption: true
+};
+text = JSON.stringify(options);
+var signedOptions = global.openpgp.signClearMessage(parsedPrivateKeys.keys, text);
+
+
 var mail = "aaa@bbb.ccc";
 
 //function createUserSessionKey(name){
@@ -153,6 +166,7 @@ var Response = function(test) {
     this._status = 0;
     this.status = function(_status){
         responseScope._status = _status;
+        return responseScope;
     };
     this.userMsg = null;
     this.isJson = false;
@@ -231,9 +245,13 @@ exports.testRouteRegister = function(test){
             req.params = {};
             req.params.user = userName.toLowerCase();
             req.body = {};
-            req.body.publicKeyText = publicKeyArmored;
+            req.body.key = publicKeyArmored;
             req.body.keyID = keyID;
             req.body.mail = mail;
+            req.body.encryptionID = encryptionID;
+            req.body.encryptionVersion = encryptionVersion;
+            req.body.encryptionTest = encryptionTest;
+            req.body.options = signedOptions;
             req.body.profile = signedProfile;
             req.ip = "0.0.0.0";
 
@@ -278,9 +296,13 @@ exports.testRouteRegisterConfirm = function(test){
             req.params = {};
             req.params.user = userName.toLowerCase();
             req.body = {};
-            req.body.publicKeyText = publicKeyArmored;
+            req.body.key = publicKeyArmored;
             req.body.keyID = keyID;
             req.body.mail = mail;
+            req.body.encryptionID = encryptionID;
+            req.body.encryptionVersion = encryptionVersion;
+            req.body.encryptionTest = encryptionTest;
+            req.body.options = signedOptions;
             req.body.profile = signedProfile;
             req.ip = "0.0.0.0";
 
@@ -375,9 +397,13 @@ exports.testRouteRegisterConfirmLogin = function(test){
                 req.params = {};
                 req.params.user = userName.toLowerCase();
                 req.body = {};
-                req.body.publicKeyText = publicKeyArmored;
+                req.body.key = publicKeyArmored;
                 req.body.keyID = keyID;
                 req.body.mail = mail;
+                req.body.encryptionID = encryptionID;
+                req.body.encryptionVersion = encryptionVersion;
+                req.body.encryptionTest = encryptionTest;;
+                req.body.options = signedOptions;
                 req.body.profile = signedProfile;
                 req.ip = "0.0.0.0";
 
@@ -463,7 +489,7 @@ exports.testRouteRegisterConfirmLogin = function(test){
                     var msg = global.helper.pgpDecrypt(res.userMsg, privateKeyArmored);
                     var jsonMsg = JSON.parse(msg);
 
-                    global.helper.hasExactProperties(
+                    global.helper.hasExactPropertiesException(
                         jsonMsg, [
                             "validUntil",
                             "sessionKeyID",

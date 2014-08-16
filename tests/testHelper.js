@@ -28,28 +28,28 @@ exports.testHasExactProperties = function(test){
 
     //test exact
     try {
-        var res = global.helper.hasExactProperties(obj, ["cheese","name"]);
+        var res = global.helper.hasExactPropertiesException(obj, ["cheese","name"]);
     } catch(err) {
         test.ok(false);
     }
 
     //test less
     try {
-        var res = global.helper.hasExactProperties(obj, ["cheese"]);
+        var res = global.helper.hasExactPropertiesException(obj, ["cheese"]);
     } catch(err) {
         test.ok(true);
     }
 
     //test different
     try {
-        var res = global.helper.hasExactProperties(obj, ["cake"]);
+        var res = global.helper.hasExactPropertiesException(obj, ["cake"]);
     } catch(err) {
         test.ok(true);
     }
 
     //test exact and different
     try {
-        var res = global.helper.hasExactProperties(obj, ["cheese","name", "cake"]);
+        var res = global.helper.hasExactPropertiesException(obj, ["cheese","name", "cake"]);
     } catch(err) {
         test.ok(true);
     }
