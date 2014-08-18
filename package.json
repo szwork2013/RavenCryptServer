@@ -30,10 +30,10 @@
         "sqlite3": "*",
         "spdy":"*",
         "captchapng": "*",
-        "socket.io-clusterhub": "*",
         "openpgp": "*",
         "raw-body": "*",
         "busboy": "*",
-        "socket.io": "0.9.6"
+        "socket.io": "*",
+        "socket.io-redis": "*"
     }
 }

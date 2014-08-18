@@ -9,7 +9,7 @@ enums.environmentModes = {
     production: 'production'
 };
 enums.clusterStores = {
-    clusterhub: "clusterhub",
+    default: "default",
     redis: "redis"
 };
 
@@ -22,14 +22,16 @@ var config = function(overrideEnviron){
     //this.environment = enums.environmentModes.productionTEST;
     //this.environment = enums.environmentModes.production;
 
+    //IMPORTANT:
+    //If you do clustering you need to setup redis!!
+    //If you do clustering you need to setup redis!!
+    //If you do clustering you need to setup redis!!
+    //If you do clustering you need to setup redis!!
+    //see redis.json
+
     //number of clustered processes to spawn. this should be the number of CPUs you want to handle incoming connections.
     //usually you do not want all of them to work on NodeJS, because you need some of them for the DataBase etc.
     this.numForks = null; //null = automatic detection, half the CPUs of the server by default
-
-    //this indicates how the key/value store is set up.
-    //if you run a single server it is recommended to use clusterhub, so all process in NodeJS can communicate directly to each other
-    //if you run want to run multiple servers you must use redis.
-    this.clusterStore = enums.clusterStores.clusterhub;
 
     //just out of pure interest, what kind of db people prefer.
     //gets auto filled from config.json, you don't need fill in anything here!

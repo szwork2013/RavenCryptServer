@@ -1,0 +1,5 @@
+{
+    "redisPort": 6379,
+    "redisIp": "localhost",
+    "redisPassword": ""
+}
