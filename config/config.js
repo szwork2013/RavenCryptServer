@@ -17,10 +17,11 @@ var config = function(overrideEnviron){
     //gets filled from package.json
     this.version = null;
 
-    // Run Modes ('development', test', 'production') //set to 'production' for a real world server
+    // Run Modes ('development', test', 'production')
     this.environment = enums.environmentModes.development;
 
-    //these are CLUSTERED tests. you need to set up redis for that
+    //set to 'production' for a real world server
+    //these are CLUSTERED modes. you need to set up redis for this
     //this.environment = enums.environmentModes.productionTEST;
     //this.environment = enums.environmentModes.production;
 
