@@ -33,7 +33,7 @@ validations.blogResponse.review.length = 1200;
 validations.blogResponse.review.textLength = 800;
 
 validations.userStorage = {};
-validations.userStorage.length = 1000;
+validations.userStorage.length = 15000;
 
 validations.conversationManifest= {};
 validations.conversationManifest.length = 5000;
