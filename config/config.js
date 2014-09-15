@@ -59,6 +59,7 @@ var config = function(overrideEnviron){
 
 
     this.log.enabled = true; //turn of ANY logging.. including startup!
+    this.log.DBenabled = false; //turns of db logging
     this.log.file = false; //write log to file
     this.log.errorData = true; //log error data, very useful for developers.
     this.log.inputData = true; //logs input data, very useful for developers.
