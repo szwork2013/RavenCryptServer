@@ -20,8 +20,8 @@ require("../lib/model.js");
 //this will fill our memory db with tables, if this has not already happened
 var synced = false;
 function syncFinished(callback) {
-    if(!synced)
-        global.db.sequelize.sync().done(function(){
+    if (!synced)
+        global.db.sequelize.sync().done(function () {
             synced = true;
             //console.log("synced");
             callback();
@@ -30,7 +30,7 @@ function syncFinished(callback) {
         callback();
 }
 
-function getRcKeyID(armoredPGPKey){
+function getRcKeyID(armoredPGPKey) {
     var keys = openpgp.key.readArmored(armoredPGPKey);
 
     var key = keys.keys[0];
@@ -93,9 +93,9 @@ var options = {
 text = JSON.stringify(options);
 var signedOptions = global.openpgp.signClearMessage(parsedPrivateKeys.keys, text);
 
-exports.testUserRegister = function(test){
+exports.testUserRegister = function (test) {
 
-    syncFinished(function(){
+    syncFinished(function () {
 
         global.model.UserRegister
             .build({
@@ -111,11 +111,11 @@ exports.testUserRegister = function(test){
                 mail: "a@b.c"
             })
             .save()
-            .error(function(err) {
+            .error(function (err) {
                 test.equal(null, JSON.stringify(err), "should not throw error");
                 test.done();
             })
-            .success(function() {
+            .success(function () {
                 test.done();
             });
 
@@ -123,9 +123,9 @@ exports.testUserRegister = function(test){
     });
 };
 
-exports.testUserKey = function(test){
+exports.testUserKey = function (test) {
 
-    syncFinished(function(){
+    syncFinished(function () {
 
         global.model.UserKey
             .build({
@@ -134,20 +134,20 @@ exports.testUserKey = function(test){
                 id: keyID
             })
             .save()
-            .error(function(err) {
+            .error(function (err) {
                 test.equal(null, JSON.stringify(err), "should not throw error");
                 test.done();
             })
-            .success(function() {
+            .success(function () {
                 test.done();
             });
     });
 };
 
 
-exports.testServerSessionKey = function(test){
+exports.testServerSessionKey = function (test) {
 
-    syncFinished(function(){
+    syncFinished(function () {
 
         var ServerSessionKey = global.model.ServerSessionKey;
         var rnd = ServerSessionKey.generate();
@@ -160,11 +160,11 @@ exports.testServerSessionKey = function(test){
                 algorithm: algorithm
             })
             .save()
-            .error(function(err) {
+            .error(function (err) {
                 test.equal(null, JSON.stringify(err), "should not throw error");
                 test.done();
             })
-            .success(function(serverKey) {
+            .success(function (serverKey) {
                 var dataJSON = {name: "lol", validUntil: new Date()};
                 var testString = JSON.stringify(dataJSON);
 

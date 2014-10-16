@@ -1,7 +1,7 @@
 //crypto libs
 require("../lib/crypto.js")
 
-exports.PGP = function(test){
+exports.PGP = function (test) {
     var text = "text sdfasdfasd fasdfasdbgioasdfpibaWR" +
         "BAWEBNAE" +
         "DFGGASDFG" +
@@ -19,31 +19,31 @@ exports.PGP = function(test){
 
     var privateKeyArmored =
         "-----BEGIN PGP PRIVATE KEY BLOCK-----\n" +
-            "Version: OpenPGP.js v.1.20130712\n" +
-            "Comment: http://openpgpjs.org\n" +
-            "\n" +
-            "xcA4BFIIGnUBAf95dOXTuWrXc67wp3K3b4BTWjt0wRYWMI0mflBx6vE6rUha\n" +
-            "oX7Hj2HfxFo5/YqL1sGzL2saUktOsAszvVROV+ktABEBAAEAAf9jubMXxC/Q\n" +
-            "1gC3QpYzvc69IeKdvAjZkWXkTGTbFJCbnxbHfMRG0+j3DbFXtY+eKmQXvrWy\n" +
-            "DKjPaYCO39rfkHNBAQDFv7+qwEt9cPYJFTxm98wqHrcrdwNcPDg1Rnu4/xfN\n" +
-            "3QEAnTvw59D5FByRB8XuOlzcP8bifkoGUVXyCfYaYhheG5EA/2yULvjqU56y\n" +
-            "4vUcAJ36Q1F28EWWfoQqIsqYxcANcMIVU+DNBHVzZXLCXAQQAQgAEAUCUgga\n" +
-            "dgkQKxeHwufF0WcAABUqAf93G9R1xKZYTXFXaBOcL16yMG7LUheLQTYgeVdS\n" +
-            "VYMhMw/kjw6isASNF9bY1VbRlGE7+ZjaUMAFEsvb3hmlaeDJ\n" +
-            "=+nVB\n" +
-            "-----END PGP PRIVATE KEY BLOCK-----";
+        "Version: OpenPGP.js v.1.20130712\n" +
+        "Comment: http://openpgpjs.org\n" +
+        "\n" +
+        "xcA4BFIIGnUBAf95dOXTuWrXc67wp3K3b4BTWjt0wRYWMI0mflBx6vE6rUha\n" +
+        "oX7Hj2HfxFo5/YqL1sGzL2saUktOsAszvVROV+ktABEBAAEAAf9jubMXxC/Q\n" +
+        "1gC3QpYzvc69IeKdvAjZkWXkTGTbFJCbnxbHfMRG0+j3DbFXtY+eKmQXvrWy\n" +
+        "DKjPaYCO39rfkHNBAQDFv7+qwEt9cPYJFTxm98wqHrcrdwNcPDg1Rnu4/xfN\n" +
+        "3QEAnTvw59D5FByRB8XuOlzcP8bifkoGUVXyCfYaYhheG5EA/2yULvjqU56y\n" +
+        "4vUcAJ36Q1F28EWWfoQqIsqYxcANcMIVU+DNBHVzZXLCXAQQAQgAEAUCUgga\n" +
+        "dgkQKxeHwufF0WcAABUqAf93G9R1xKZYTXFXaBOcL16yMG7LUheLQTYgeVdS\n" +
+        "VYMhMw/kjw6isASNF9bY1VbRlGE7+ZjaUMAFEsvb3hmlaeDJ\n" +
+        "=+nVB\n" +
+        "-----END PGP PRIVATE KEY BLOCK-----";
 
     var publicKeyArmored =
         "-----BEGIN PGP PUBLIC KEY BLOCK-----\n" +
-            "Version: OpenPGP.js v.1.20130712\n" +
-            "Comment: http://openpgpjs.org\n" +
-            "\n" +
-            "xk0EUggadQEB/3l05dO5atdzrvCncrdvgFNaO3TBFhYwjSZ+UHHq8TqtSFqh\n" +
-            "fsePYd/EWjn9iovWwbMvaxpSS06wCzO9VE5X6S0AEQEAAc0EdXNlcsJcBBAB\n" +
-            "CAAQBQJSCBp2CRArF4fC58XRZwAAFSoB/3cb1HXEplhNcVdoE5wvXrIwbstS\n" +
-            "F4tBNiB5V1JVgyEzD+SPDqKwBI0X1tjVVtGUYTv5mNpQwAUSy9veGaVp4Mk=\n" +
-            "=dzX9\n" +
-            "-----END PGP PUBLIC KEY BLOCK-----";
+        "Version: OpenPGP.js v.1.20130712\n" +
+        "Comment: http://openpgpjs.org\n" +
+        "\n" +
+        "xk0EUggadQEB/3l05dO5atdzrvCncrdvgFNaO3TBFhYwjSZ+UHHq8TqtSFqh\n" +
+        "fsePYd/EWjn9iovWwbMvaxpSS06wCzO9VE5X6S0AEQEAAc0EdXNlcsJcBBAB\n" +
+        "CAAQBQJSCBp2CRArF4fC58XRZwAAFSoB/3cb1HXEplhNcVdoE5wvXrIwbstS\n" +
+        "F4tBNiB5V1JVgyEzD+SPDqKwBI0X1tjVVtGUYTv5mNpQwAUSy9veGaVp4Mk=\n" +
+        "=dzX9\n" +
+        "-----END PGP PUBLIC KEY BLOCK-----";
 
     var publicKeys = openpgp.key.readArmored(publicKeyArmored);
     var privateKeys = openpgp.key.readArmored(privateKeyArmored);
@@ -68,7 +68,7 @@ exports.PGP = function(test){
 };
 
 
-exports.hash = function(test){
+exports.hash = function (test) {
 
     var clear = "abc";
     var expected = "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad";
@@ -81,7 +81,7 @@ exports.hash = function(test){
     test.done();
 };
 
-exports.AES = function(test){
+exports.AES = function (test) {
 
     var clear = "foobarfoobar1234567890";
 
@@ -90,14 +90,14 @@ exports.AES = function(test){
     var iv = openpgp.crypto.generateSessionKey(symmAlgo);
     var symmencDataOCFB = openpgp.crypto.cfb.normalEncrypt(symmAlgo, symmKey, clear, iv);
 
-    var text = openpgp.crypto.cfb.normalDecrypt(symmAlgo,symmKey,symmencDataOCFB, iv);
+    var text = openpgp.crypto.cfb.normalDecrypt(symmAlgo, symmKey, symmencDataOCFB, iv);
 
     test.equal(clear, text);
 
     test.done();
 };
 
-exports.AESExchanged = function(test){
+exports.AESExchanged = function (test) {
 
     var clear = "foobarfoobar1234567890";
 
@@ -113,14 +113,14 @@ exports.AESExchanged = function(test){
     var iv = openpgp.crypto.generateSessionKey(symmAlgo);
     var symmencDataOCFB = openpgp.crypto.cfb.normalEncrypt(symmAlgo, symmKey, clear, iv);
 
-    var text = openpgp.crypto.cfb.normalDecrypt(symmAlgo,symmKey,symmencDataOCFB, iv);
+    var text = openpgp.crypto.cfb.normalDecrypt(symmAlgo, symmKey, symmencDataOCFB, iv);
 
     test.equal(clear, text);
 
     test.done();
 };
 
-exports.AESExchangedSecured = function(test){
+exports.AESExchangedSecured = function (test) {
 
     var clear = "foobarfoobar1234567890";
     var genAlgo = "aes128"; // AES128
@@ -140,14 +140,14 @@ exports.AESExchangedSecured = function(test){
     var symmAlgo = "aes256"; // AES256
     var symmencDataOCFB = openpgp.crypto.cfb.normalEncrypt(symmAlgo, symmKey, clear, iv);
 
-    var text = openpgp.crypto.cfb.normalDecrypt(symmAlgo,symmKey,symmencDataOCFB, iv);
+    var text = openpgp.crypto.cfb.normalDecrypt(symmAlgo, symmKey, symmencDataOCFB, iv);
 
     test.equal(clear, text);
 
     test.done();
 };
 
-exports.AESTest = function(test) {
+exports.AESTest = function (test) {
 
     function encryptDecrypt(clear) {
         var genAlgo = "aes128"; // AES128
@@ -167,7 +167,7 @@ exports.AESTest = function(test) {
         var symmAlgo = "aes256"; // AES256
         var symmencDataOCFB = openpgp.crypto.cfb.normalEncrypt(symmAlgo, symmKey, clear, iv);
 
-        var text = openpgp.crypto.cfb.normalDecrypt(symmAlgo,symmKey,symmencDataOCFB, iv);
+        var text = openpgp.crypto.cfb.normalDecrypt(symmAlgo, symmKey, symmencDataOCFB, iv);
         return text;
     }
 

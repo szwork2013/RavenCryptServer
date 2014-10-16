@@ -49,7 +49,7 @@ require("../lib/socket.js");
 
 var routes = require("../lib/routes.js");
 
-function getRcKeyID(armoredPGPKey){
+function getRcKeyID(armoredPGPKey) {
     var keys = openpgp.key.readArmored(armoredPGPKey);
 
     var key = keys.keys[0];
@@ -135,14 +135,14 @@ var mail = "aaa@bbb.ccc";
 var synced = false;
 function syncFinished(callback) {
 
-    function updateSessionKeys(){
-        global.session.updateKeys(function(){
-           callback(session);
+    function updateSessionKeys() {
+        global.session.updateKeys(function () {
+            callback(session);
         });
     }
 
-    if(!synced)
-        global.db.sequelize.sync().done(function(){
+    if (!synced)
+        global.db.sequelize.sync().done(function () {
             synced = true;
             //console.log("synced");
             updateSessionKeys();
@@ -153,18 +153,19 @@ function syncFinished(callback) {
 
 //response tester.. evil little function to test the routes.
 //extend when necessary, or build something better :-)
-var Response = function(test) {
+var Response = function (test) {
     var responseScope = this;
     //private:
     function parseArgs(caller, args) {
         //this is crazy. love that this works :-)
-        if(args.length > 0){
+        if (args.length > 0) {
             caller.userMsg = args[0];
         }
     }
+
     //public:
     this._status = 0;
-    this.status = function(_status){
+    this.status = function (_status) {
         responseScope._status = _status;
         return responseScope;
     };
@@ -172,23 +173,25 @@ var Response = function(test) {
     this.isJson = false;
 
     //overwrite these
-    this.ok = function(res){}; //msg is ok
-    this.notOk = function(res){}; //the message is not ok
-    this.error = function(res){}; //the server responded with an
-    this.formatError = function(msg) {
+    this.ok = function (res) {
+    }; //msg is ok
+    this.notOk = function (res) {
+    }; //the message is not ok
+    this.error = function (res) {
+    }; //the server responded with an
+    this.formatError = function (msg) {
         test.equal(msg, null, "there was a format error");
         return test.done();
     }; //the format, the server responded in, is incorrect
 
 
-    this.callback = function(res){
-        switch(res._status)
-        {
+    this.callback = function (res) {
+        switch (res._status) {
             case 200:
-                if(this.isJson) {
-                    try{
+                if (this.isJson) {
+                    try {
                         res.json = JSON.parse(res.userMsg);
-                    } catch(err) {
+                    } catch (err) {
                         this.formatError("should return json");
                     }
                 }
@@ -213,14 +216,14 @@ var Response = function(test) {
         }
     };
 
-    this.json = function(){
+    this.json = function () {
         parseArgs(this, arguments);
         this.isJson = true;
         this.userMsg = JSON.stringify(this.userMsg);
         this.callback(this);
     };
 
-    this.send = function(){
+    this.send = function () {
         parseArgs(this, arguments);
         this.isJson = false;
         this.callback(this);
@@ -230,14 +233,14 @@ var Response = function(test) {
 };
 
 
-exports.testRouteRegister = function(test){
-    syncFinished(function(){
+exports.testRouteRegister = function (test) {
+    syncFinished(function () {
 
         var userName = "testRouteRegister";
 
         testRegister();
 
-        function testRegister(){
+        function testRegister() {
 
             var req = {};
             req.logEntry = {};
@@ -255,19 +258,19 @@ exports.testRouteRegister = function(test){
             req.ip = "0.0.0.0";
 
             var res = new Response(test);
-            res.ok = function (res){
+            res.ok = function (res) {
                 return test.done();
             };
-            res.notOk = function(res){
+            res.notOk = function (res) {
                 test.equal(res.userMsg, null, "should have been ok");
                 return test.done();
             };
-            res.error = function(res){
+            res.error = function (res) {
                 test.equal(res.userMsg, null, "should have no error");
                 return test.done();
             };
 
-            try{
+            try {
                 routes.user.register(req, res);
             } catch (err) {
                 test.equal(JSON.stringify(err), null, "should throw no error: " + err);
@@ -280,14 +283,14 @@ exports.testRouteRegister = function(test){
 };
 
 
-exports.testRouteRegisterConfirm = function(test){
-    syncFinished(function(){
+exports.testRouteRegisterConfirm = function (test) {
+    syncFinished(function () {
 
         var userName = "testRouteRegisterConfirm";
 
         testRegister();
 
-        function testRegister(){
+        function testRegister() {
 
             var req = {};
             req.logEntry = {};
@@ -305,7 +308,7 @@ exports.testRouteRegisterConfirm = function(test){
             req.ip = "0.0.0.0";
 
             var res = new Response(test);
-            res.ok = function (res){
+            res.ok = function (res) {
                 test.ok(res.userMsg.length > 4, "should be a base64 captcha png");
 
                 //logger.info(activationCodeCaptcha);
@@ -316,16 +319,16 @@ exports.testRouteRegisterConfirm = function(test){
 
                 testConfirm(activationCode);
             };
-            res.notOk = function(res){
+            res.notOk = function (res) {
                 test.equal(res.json, null, "should have been ok");
                 return test.done();
             };
-            res.error = function(res){
+            res.error = function (res) {
                 test.equal(res.json, null, "should have no error");
                 return test.done();
             };
 
-            try{
+            try {
                 routes.user.register(req, res);
             } catch (err) {
                 test.equal(JSON.stringify(err), null, "should throw no error: " + err);
@@ -334,7 +337,7 @@ exports.testRouteRegisterConfirm = function(test){
             }
         }
 
-        function testConfirm(activationCode){
+        function testConfirm(activationCode) {
 
             var privateKeys = openpgp.key.readArmored(privateKeyArmored);
             var signed = openpgp.signClearMessage(privateKeys.keys, activationCode);
@@ -349,22 +352,22 @@ exports.testRouteRegisterConfirm = function(test){
             req.ip = "0.0.0.0";
 
             var res = new Response(test);
-            res.ok = function (res){
+            res.ok = function (res) {
                 return test.done();
             }
-            res.notOk = function(res){
+            res.notOk = function (res) {
                 test.equal(res.userMsg, null, "should have been ok");
                 return test.done();
             }
-            res.error = function(res){
+            res.error = function (res) {
                 test.equal(res.userMsg, null, "should have no error");
                 return test.done();
             }
 
-            try{
+            try {
                 routes.user.registerConfirm(req, res);
             } catch (err) {
-                test.equal(JSON.stringify(err), null , "should throw no error: " + err);
+                test.equal(JSON.stringify(err), null, "should throw no error: " + err);
                 test.done();
                 return;
             }
@@ -373,21 +376,21 @@ exports.testRouteRegisterConfirm = function(test){
 };
 
 
-exports.testRouteRegisterConfirmLogin = function(test){
-    syncFinished(function(){
+exports.testRouteRegisterConfirmLogin = function (test) {
+    syncFinished(function () {
 
         var userName = "testRouteRegisterConfirmLogin";
 
         //important when using login! alternative: build a key and add it to global.session.keys
-        global.session.updateKeys(function(err){
-            if(err){
+        global.session.updateKeys(function (err) {
+            if (err) {
                 test.ok(false, "no keys cant login!")
                 test.done();
             }
 
             testRegister();
 
-            function testRegister(){
+            function testRegister() {
 
                 var req = {};
                 req.logEntry = {};
@@ -399,13 +402,14 @@ exports.testRouteRegisterConfirmLogin = function(test){
                 req.body.keyID = keyID;
                 req.body.mail = mail;
                 req.body.encryptionVersion = encryptionVersion;
-                req.body.encryptionTest = encryptionTest;;
+                req.body.encryptionTest = encryptionTest;
+                ;
                 req.body.options = signedOptions;
                 req.body.profile = signedProfile;
                 req.ip = "0.0.0.0";
 
                 var res = new Response(test);
-                res.ok = function (res){
+                res.ok = function (res) {
                     test.ok(res.userMsg.length > 4, "should be a base64 captcha png");
 
                     //logger.info(activationCodeCaptcha);
@@ -417,16 +421,16 @@ exports.testRouteRegisterConfirmLogin = function(test){
 
                     testConfirm(activationCode);
                 }
-                res.notOk = function(res){
+                res.notOk = function (res) {
                     test.equal(null, res.userMsg, "should have been ok");
                     return test.done();
                 }
-                res.error = function(res){
+                res.error = function (res) {
                     test.equal(null, res.userMsg, "should have no error");
                     return test.done();
                 }
 
-                try{
+                try {
                     routes.user.register(req, res);
                 } catch (err) {
                     test.equal(null, JSON.stringify(err), "should throw no error: " + err);
@@ -435,7 +439,7 @@ exports.testRouteRegisterConfirmLogin = function(test){
                 }
             }
 
-            function testConfirm(activationCode){
+            function testConfirm(activationCode) {
 
                 var privateKeys = openpgp.key.readArmored(privateKeyArmored);
                 var signed = openpgp.signClearMessage(privateKeys.keys, activationCode);
@@ -450,19 +454,19 @@ exports.testRouteRegisterConfirmLogin = function(test){
                 req.ip = "0.0.0.0";
 
                 var res = new Response(test);
-                res.ok = function (res){
+                res.ok = function (res) {
                     testLogin();
                 };
-                res.notOk = function(res){
+                res.notOk = function (res) {
                     test.equal(null, res.userMsg, "should have been ok");
                     return test.done();
                 };
-                res.error = function(res){
+                res.error = function (res) {
                     test.equal(null, res.userMsg, "should have no error");
                     return test.done();
                 };
 
-                try{
+                try {
                     routes.user.registerConfirm(req, res);
                 } catch (err) {
                     test.equal(null, JSON.stringify(err), "should throw no error: " + err);
@@ -470,7 +474,7 @@ exports.testRouteRegisterConfirmLogin = function(test){
                 }
             }
 
-            function testLogin(){
+            function testLogin() {
 
                 var req = {};
                 req.logEntry = {};
@@ -481,7 +485,7 @@ exports.testRouteRegisterConfirmLogin = function(test){
                 req.params.id = keyID;
 
                 var res = new Response(test);
-                res.ok = function (res){
+                res.ok = function (res) {
 
                     var msg = global.helper.pgpDecrypt(res.userMsg, privateKeyArmored);
                     var jsonMsg = JSON.parse(msg);
@@ -497,16 +501,16 @@ exports.testRouteRegisterConfirmLogin = function(test){
                     return test.done();
 
                 };
-                res.notOk = function(res){
+                res.notOk = function (res) {
                     test.equal(null, res.userMsg, "should have been ok");
                     return test.done();
                 };
-                res.error = function(res){
+                res.error = function (res) {
                     test.equal(null, res.userMsg, "should have no error");
                     return test.done();
                 };
 
-                try{
+                try {
                     routes.userKey.login(req, res);
                 } catch (err) {
                     test.equal(null, JSON.stringify(err), "should throw no error: " + err);

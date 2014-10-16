@@ -1,11 +1,11 @@
 require("../lib/crypto.js");
 require("../lib/helper.js");
 
-exports.testHasOwnProperties = function(test){
-    var obj = {name: "", cheese:""}
+exports.testHasOwnProperties = function (test) {
+    var obj = {name: "", cheese: ""}
 
     //test exact
-    var res = global.helper.hasOwnProperties(obj, ["cheese","name"]);
+    var res = global.helper.hasOwnProperties(obj, ["cheese", "name"]);
     test.equal(true, res);
 
     //test less
@@ -17,40 +17,40 @@ exports.testHasOwnProperties = function(test){
     test.equal(false, res);
 
     //test exact and different
-    var res = global.helper.hasOwnProperties(obj, ["cheese","name", "cake"]);
+    var res = global.helper.hasOwnProperties(obj, ["cheese", "name", "cake"]);
     test.equal(false, res);
 
     test.done();
 };
 
-exports.testHasExactProperties = function(test){
-    var obj = {name: "", cheese:""}
+exports.testHasExactProperties = function (test) {
+    var obj = {name: "", cheese: ""}
 
     //test exact
     try {
-        var res = global.helper.hasExactPropertiesException(obj, ["cheese","name"]);
-    } catch(err) {
+        var res = global.helper.hasExactPropertiesException(obj, ["cheese", "name"]);
+    } catch (err) {
         test.ok(false);
     }
 
     //test less
     try {
         var res = global.helper.hasExactPropertiesException(obj, ["cheese"]);
-    } catch(err) {
+    } catch (err) {
         test.ok(true);
     }
 
     //test different
     try {
         var res = global.helper.hasExactPropertiesException(obj, ["cake"]);
-    } catch(err) {
+    } catch (err) {
         test.ok(true);
     }
 
     //test exact and different
     try {
-        var res = global.helper.hasExactPropertiesException(obj, ["cheese","name", "cake"]);
-    } catch(err) {
+        var res = global.helper.hasExactPropertiesException(obj, ["cheese", "name", "cake"]);
+    } catch (err) {
         test.ok(true);
     }
 
