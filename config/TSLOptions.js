@@ -1,3 +1,5 @@
+'use strict';
+
 var fs = require('fs');
 
 var TLSOptions;
@@ -17,7 +19,6 @@ var TLSOptions;
 //don't allow RC4 anymore. RC4 is broken and should die :-)
 //all modern browsers should support these modes, if yours don't = update your browser or set up your own server and use
 //the cipher chain you still deem worthy :-)
-
 
 
 //SelfSigned / CA

@@ -1,3 +1,5 @@
+'use strict';
+
 //validation config - do not change if you don't know what you are doing, this might result in an incompatible server to the rest of the "network"
 //this is manly here for those that want to enforce stricter rules and regular expressions and might move out of the config folder altogether.
 
@@ -35,10 +37,10 @@ validations.blogResponse.review.textLength = 800;
 validations.userStorage = {};
 validations.userStorage.length = 15000;
 
-validations.conversationManifest= {};
+validations.conversationManifest = {};
 validations.conversationManifest.length = 5000;
 
-validations.conversationMsg= {};
+validations.conversationMsg = {};
 validations.conversationMsg.length = 2000;
 
 validations.userMsg = {};
@@ -83,7 +85,7 @@ validations.server.regExp =
 var config = global.config;
 
 if (config.environment == config.enums.environmentModes.development ||
-    config.environment == config.enums.environmentModes.productionTEST){
+    config.environment == config.enums.environmentModes.productionTEST) {
     //disable server regex validations in these modes, so we can work with ips and garbage for system tests
     validations.server.regExp = ".*";
 }

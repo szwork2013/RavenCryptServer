@@ -1,3 +1,5 @@
+'use strict';
+
 //clustering..
 global.cluster = require('cluster');
 

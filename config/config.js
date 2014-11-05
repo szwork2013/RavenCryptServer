@@ -1,3 +1,5 @@
+'use strict';
+
 var os = require('os');
 var path = require('path');
 
@@ -13,7 +15,7 @@ enums.clusterStores = {
     redis: "redis"
 };
 
-var config = function(overrideEnviron){
+var config = function (overrideEnviron) {
     //gets filled from package.json
     this.version = null;
 
@@ -50,7 +52,7 @@ var config = function(overrideEnviron){
 
     this.web.portHTTPS = 1338;
 
-    if(this.web.portHTTPS != 443)
+    if (this.web.portHTTPS != 443)
         this.web.serverName = this.web.hostname + ":" + this.web.portHTTPS;
     else
         this.web.serverName = this.web.hostname;
@@ -96,20 +98,20 @@ var config = function(overrideEnviron){
     this.os.arch = os.arch();
     this.os.release = os.release();
 
-    if(overrideEnviron) {
+    if (overrideEnviron) {
         this.environment = overrideEnviron;
     }
 
-    this.isTestEnvironment = function() {
+    this.isTestEnvironment = function () {
         return (
             this.environment == enums.environmentModes.test ||
             this.environment == enums.environmentModes.development ||
             this.environment == enums.environmentModes.productionTEST
-        );
+            );
     };
 
     if (this.environment != enums.environmentModes.development &&
-        this.environment != enums.environmentModes.productionTEST){
+        this.environment != enums.environmentModes.productionTEST) {
         //if not in development mode, delete the development namespace from config
         delete this.development;
     }

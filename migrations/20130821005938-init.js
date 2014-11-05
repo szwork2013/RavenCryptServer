@@ -1,3 +1,5 @@
+'use strict';
+
 //TODO this file should create our basic database layout in our first 'official' release version.
 //in later versions we will then create new migrations to amend new changes to this layout :-)
 
