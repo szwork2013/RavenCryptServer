@@ -39,7 +39,8 @@ require("../lib/helper.js");
 
 var http = require('http');
 var httpServer = http.createServer(global.app);
-global.server = httpServer;
+global.server = {};
+global.server.https = httpServer; //fake it till you make it
 
 //sessionKeys
 require("../lib/session.js");

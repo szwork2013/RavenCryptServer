@@ -16,7 +16,7 @@ var TLSOptions = require("./config/TSLOptions.js");
 require("./lib/logger.js");
 
 //protocol libraries
-//var http = require('http');
+var http = require('http');
 //var https = require('https'); //scratch that, SPDY here we come!
 var spdy = require('spdy');
 
@@ -57,11 +57,12 @@ global.logger.info("Setting up Express..");
 require("./lib/app.js");
 
 //server
-//var httpServer = http.createServer(global.app);
+var httpServer = http.createServer(global.app);
 //var httpsServer = https.createServer(TLSOptions, global.app);
 var spdyServer = spdy.createServer(TLSOptions, global.app);
-global.server = spdyServer;
-
+global.server = {};
+global.server.https = spdyServer;
+global.server.http = httpServer;
 //SocketIo
 global.logger.info("Adding Sockets..");
 require("./lib/socket.js");
@@ -224,11 +225,13 @@ function startServer() {
             workerID = cluster.worker.id + ": ";
         }
 
-        global.server.listen(config.web.portHTTPS);
-        global.logger.info(workerID + "RavenCrypt Server Server listening on https://127.0.0.1:" + config.web.portHTTPS);
+        global.server.https.listen(config.web.portHTTPS);
+        global.server.http.listen(config.web.portHTTP);
+
+        global.logger.info(workerID + "RavenCrypt Server Server listening on https://127.0.0.1:" + config.web.portHTTPS + " and https://127.0.0.1:" + config.web.portHTTP);
 
     } catch (err) {
-        global.logger.info("Couldn't start Server:" + err)
+        global.logger.info("Couldn't start Server:" + err);
         throw err;
     }
 }

@@ -51,6 +51,7 @@ var config = function (overrideEnviron) {
     this.log = {};
 
     this.web.portHTTPS = 1338;
+    this.web.portHTTP = 13380;
 
     if (this.web.portHTTPS != 443)
         this.web.serverName = this.web.hostname + ":" + this.web.portHTTPS;
