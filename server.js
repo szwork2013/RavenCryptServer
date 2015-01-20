@@ -228,7 +228,7 @@ function startServer() {
         global.server.https.listen(config.web.portHTTPS);
         global.server.http.listen(config.web.portHTTP);
 
-        global.logger.info(workerID + "RavenCrypt Server Server listening on https://127.0.0.1:" + config.web.portHTTPS + " and https://127.0.0.1:" + config.web.portHTTP);
+        global.logger.info(workerID + "RavenCrypt Server Server listening on https://127.0.0.1:" + config.web.portHTTPS + " and http://127.0.0.1:" + config.web.portHTTP);
 
     } catch (err) {
         global.logger.info("Couldn't start Server:" + err);
