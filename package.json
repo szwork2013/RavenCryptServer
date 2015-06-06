@@ -1,40 +1,43 @@
 {
-    "name": "RavenCryptServer",
-    "version": "0.1.0",
-    "description": "RavenCryptServer",
-    "main": "server.js",
-    "scripts": {
+  "name": "RavenCryptServer",
+  "version": "0.1.0",
+  "description": "RavenCryptServer",
+  "main": "server.js",
+  "scripts": {
     "test": "echo \"Error: no test specified! Configure in package.json\" && exit 1"
-    },
-    "repository": { "type" : "git" },
-    "keywords": [
+  },
+  "repository": {
+    "type": "git"
+  },
+  "keywords": [
     "Node.js",
     "RavenCrypt",
     "Server",
     "Crypto"
-    ],
-    "private": true,
-    "author": "RavenCrypt",
-    "license": "AGPLV3",
-    "readmeFilename": "README.md",
-    "dependencies": {
-        "node-uuid": "*",
-        "cron":"*",
-        "express": "*",
-        "compression": "*",
-        "log4js": "*",
-        "mysql": "*",
-        "nodeunit": "*",
-        "sequelize": "*",
-        "toobusy-js": "*",
-        "sqlite3": "*",
-        "spdy":"*",
-        "captchapng": "*",
-        "openpgp": "*",
-        "raw-body": "*",
-        "busboy": "*",
-        "socket.io": "*",
-        "socket.io-redis": "*",
-        "socket.io-client": "*"
-    }
+  ],
+  "private": true,
+  "author": "RavenCrypt",
+  "license": "AGPLV3",
+  "readmeFilename": "README.md",
+  "dependencies": {
+    "busboy": "*",
+    "captchapng": "*",
+    "compression": "*",
+    "cron": "*",
+    "express": "*",
+    "log4js": "*",
+    "mysql": "*",
+    "node-uuid": "*",
+    "nodeunit": "*",
+    "openpgp": "*",
+    "raw-body": "*",
+    "sequelize": "*",
+    "sequelize-sqlite": "*",
+    "socket.io": "*",
+    "socket.io-client": "*",
+    "socket.io-redis": "*",
+    "spdy": "*",
+    "sqlite3": "^3.0.8",
+    "toobusy-js": "*"
+  }
 }

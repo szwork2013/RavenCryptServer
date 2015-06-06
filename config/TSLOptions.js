@@ -81,8 +81,6 @@ if (global.config.web.TLSMode == "EC") {
         cert: fs.readFileSync("config/keys/ec-cert.pem"),
         ciphers: '' +
             'ecdhe-ecdsa-aes256-gcm-sha256'.toUpperCase() + ':' +
-            'ecdh-ecdsa-aes256-gcm-sha256'.toUpperCase() + ':' +
-            'dhe-ecdsa-aes256-gcm-sha256'.toUpperCase() + ':' +
             'HIGH:!' +
             'MD5:!aNULL:!EDH',
         honorCipherOrder: true

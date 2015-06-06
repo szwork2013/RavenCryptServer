@@ -1,7 +1,10 @@
 {
     "development": {
-        "dialect": "sqlite",
-        "storage": "./RavenCrypt.sqlite",
+        "dialect": "mariadb",
+        "username": "root",
+        "password": "root",
+        "database": "RavenCrypt",
+        "host": "127.0.0.1",
 
         "define": {
             "timestamps": false,
