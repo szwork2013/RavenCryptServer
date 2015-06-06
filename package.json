@@ -26,18 +26,18 @@
     "cron": "*",
     "express": "*",
     "log4js": "*",
-    "mysql": "*",
+    "mariadb": "*",
     "node-uuid": "*",
     "nodeunit": "*",
     "openpgp": "*",
     "raw-body": "*",
     "sequelize": "*",
-    "sequelize-sqlite": "*",
     "socket.io": "*",
     "socket.io-client": "*",
     "socket.io-redis": "*",
     "spdy": "*",
-    "sqlite3": "^3.0.8",
+    "sqlite3": "*",
     "toobusy-js": "*"
   }
 }
+

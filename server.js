@@ -192,13 +192,11 @@ function setUp(callback) {
         config.environment == config.enums.environmentModes.productionTEST) {
         global.logger.info("Trying to syncing underlying Database Schema with Object Model..");
         global.db.sequelize
-            .sync({force: config.development.forceSyncModel})
-            .error(function (err) {
+            .sync({force: config.development.forceSyncModel}).then(function onFulfilment() {
+                startJobs();
+            },function onError(err) {
                 global.logger.log("Could not Sync Model: \n" + err);
                 throw err;
-            })
-            .success(function () {
-                startJobs();
             });
     } else {
         //if not in dev mode, we need to migrate our model with sequelize.
