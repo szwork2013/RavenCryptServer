@@ -15,11 +15,6 @@ var TLSOptions = require("./config/TSLOptions.js");
 //next lets set up our logger so we can see whats going on
 require("./lib/logger.js");
 
-//protocol libraries
-var http = require('http');
-//var https = require('https'); //scratch that, SPDY here we come!
-var spdy = require('spdy');
-
 //internal objects
 var pjson = require("./package.json");
 config.version = pjson.version;
@@ -52,17 +47,6 @@ global.db = require("./lib/db.js");
 global.logger.info("Defining Model.. ");
 require("./lib/model.js");
 
-//Express Setup
-global.logger.info("Setting up Express..");
-require("./lib/app.js");
-
-//server
-var httpServer = http.createServer(global.app);
-//var httpsServer = https.createServer(TLSOptions, global.app);
-var spdyServer = spdy.createServer(TLSOptions, global.app);
-global.server = {};
-global.server.https = spdyServer;
-global.server.http = httpServer;
 //SocketIo
 global.logger.info("Adding Sockets..");
 require("./lib/socket.js");

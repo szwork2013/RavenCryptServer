@@ -20,22 +20,15 @@
   "license": "AGPLV3",
   "readmeFilename": "README.md",
   "dependencies": {
-    "busboy": "*",
-    "captchapng": "*",
-    "compression": "*",
     "cron": "*",
-    "express": "*",
     "log4js": "*",
     "mariadb": "*",
     "node-uuid": "*",
     "nodeunit": "*",
     "openpgp": "*",
-    "raw-body": "*",
     "sequelize": "*",
     "socket.io": "*",
-    "socket.io-client": "*",
     "socket.io-redis": "*",
-    "spdy": "*",
     "sqlite3": "*",
     "toobusy-js": "*"
   }
