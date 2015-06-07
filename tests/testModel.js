@@ -115,7 +115,7 @@ exports.testUserRegister = function (test) {
                 test.equal(null, JSON.stringify(err), "should not throw error");
                 test.done();
             })
-            .success(function () {
+            .then(function () {
                 test.done();
             });
 
@@ -138,7 +138,7 @@ exports.testUserKey = function (test) {
                 test.equal(null, JSON.stringify(err), "should not throw error");
                 test.done();
             })
-            .success(function () {
+            .then(function () {
                 test.done();
             });
     });
