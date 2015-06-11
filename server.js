@@ -9,15 +9,17 @@ var configJs = require("./config/config.js");
 global.config = new configJs.config();
 global.config.validations = require("./config/validations.js");
 
-//config for transport security.. contains server private key for server certificate, do not expose!
-var TLSOptions = require("./config/TSLOptions.js");
-
 //next lets set up our logger so we can see whats going on
 require("./lib/logger.js");
 
 //internal objects
 var pjson = require("./package.json");
 config.version = pjson.version;
+
+var sockio = require("socket.io");
+
+//config for transport security.. contains server private key for server certificate, do not expose!
+var TLSOptions = require("./config/TSLOptions.js");
 
 //crypto libs
 require("./lib/crypto.js");
@@ -48,12 +50,27 @@ global.logger.info("Defining Model.. ");
 require("./lib/model.js");
 
 //SocketIo
-global.logger.info("Adding Sockets..");
-require("./lib/socket.js");
+let tls = require('tls');
+let server = tls.createServer(options, function (cleartextStream) {
+    /*
+     console.log('server connected',
+     cleartextStream.authorized ? 'authorized' : 'unauthorized');
+     //cleartextStream.write("welcome!\n");
+     cleartextStream.setEncoding('utf8');*/
+    cleartextStream.pipe(cleartextStream);
+});
+
+let ioHTTP = sockio();
+let ioHTTPS = sockio.listen(server);
+
+global.logger.info("Adding Socket Endpoints for HTTP");
+require("./lib/socket.js")(ioHTTP);
+global.logger.info("Adding Socket Endpoints for HTTPS");
+require("./lib/socket.js")(ioHTTPS);
 
 //Add the Routes
-global.logger.info("Adding Routes..");
-require("./lib/routes.js");
+//global.logger.info("Adding Routes..");
+//require("./lib/routes.js");
 
 if (cluster.isMaster) {
     setUpMaster();
@@ -199,7 +216,7 @@ function setUp(callback) {
 //and last but not least open ports for users to connect
 function startServer() {
 
-    global.workerJobs = require("./lib/workerJobs.js");
+    //global.workerJobs = require("./lib/workerJobs.js");
 
     try {
         var workerID = "";
@@ -207,8 +224,11 @@ function startServer() {
             workerID = cluster.worker.id + ": ";
         }
 
-        global.server.https.listen(config.web.portHTTPS);
-        global.server.http.listen(config.web.portHTTP);
+        ioHTTP.listen(config.web.portHTTP);
+        //server.listen(config.web.portHTTPS, function() {
+        //    console.log('server bound');
+        //});
+        server.listen(config.web.portHTTPS);
 
         global.logger.info(workerID + "RavenCrypt Server Server listening on https://127.0.0.1:" + config.web.portHTTPS + " and http://127.0.0.1:" + config.web.portHTTP);
 
