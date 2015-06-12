@@ -1,28 +1,22 @@
 'use strict';
 
-//clustering..
-global.cluster = require('cluster');
+let cluster = require('cluster');
+var openpgp = require('openpgp');
+let sockio = require("socket.io");
+let tls = require('tls');
 
-//lets load our config, hopefully nothing goes wrong here..
-var configJs = require("./config/config.js");
 
-global.config = new configJs.config();
-global.config.validations = require("./config/validations.js");
+let configJs = require("./config/config.js");
+let pjson = require("./package.json");
+let config = new configJs.config();
 
-//next lets set up our logger so we can see whats going on
-require("./lib/logger.js");
-
-//internal objects
-var pjson = require("./package.json");
 config.version = pjson.version;
+config.validations = require("./config/validations.js");
+let TLSOptions = require("./config/TSLOptions.js"); //private key file referenced here
 
-var sockio = require("socket.io");
+let logger = require("./lib/logger.js")(config);
 
-//config for transport security.. contains server private key for server certificate, do not expose!
-var TLSOptions = require("./config/TSLOptions.js");
-
-//crypto libs
-require("./lib/crypto.js");
+require("./lib/pgpoptions.js")(openpgp, config);
 
 //small helper library, full of useful JS functions.
 require("./lib/helper.js");
@@ -50,7 +44,6 @@ global.logger.info("Defining Model.. ");
 require("./lib/model.js");
 
 //SocketIo
-let tls = require('tls');
 let server = tls.createServer(options, function (cleartextStream) {
     /*
      console.log('server connected',
