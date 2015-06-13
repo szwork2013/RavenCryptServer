@@ -1,47 +1,33 @@
 'use strict';
 
 let cluster = require('cluster');
-var openpgp = require('openpgp');
 let sockio = require("socket.io");
 let tls = require('tls');
-
+let log4js = require('log4js');
+let Sequelize = require("sequelize");
 
 let configJs = require("./config/config.js");
 let pjson = require("./package.json");
 let config = new configJs.config();
 
+//let openpgp = require('openpgp');
+//require("./lib/pgpoptions.js")(openpgp,config);
+
 config.version = pjson.version;
 config.validations = require("./config/validations.js");
 let TLSOptions = require("./config/TSLOptions.js"); //private key file referenced here
 
-let logger = require("./lib/logger.js")(config);
+let logger = require("./lib/logger.js")(config, log4js);
+//let helper = require("./lib/helper.js")(openpgp);
 
-require("./lib/pgpoptions.js")(openpgp, config);
-
-//small helper library, full of useful JS functions.
-require("./lib/helper.js");
-
-//message constants
-require("./lib/constants.js");
-
-//load the validation
-require("./lib/validations.js");
-
-//sessionKeys
-require("./lib/session.js");
 //-----------------------------------------------------
 //------------------Server Startup---------------------
 //-----------------------------------------------------
 
-global.logger.info("RavenCrypt Server " + config.version + " Starting...");
-
-//DB Setup
 global.logger.info("Setting up Database Connection..");
-global.db = require("./lib/db.js");
-
-//Model Definition
+let db = require("./lib/db.js")(config, Sequelize);
 global.logger.info("Defining Model.. ");
-require("./lib/model.js");
+let model = require("./lib/model.js")(config, db, Sequelize);
 
 //SocketIo
 let server = tls.createServer(options, function (cleartextStream) {
@@ -55,15 +41,14 @@ let server = tls.createServer(options, function (cleartextStream) {
 
 let ioHTTP = sockio();
 let ioHTTPS = sockio.listen(server);
+let messageConstants = require("./lib/constants.Constantsjs");
 
 global.logger.info("Adding Socket Endpoints for HTTP");
-require("./lib/socket.js")(ioHTTP);
+require("./lib/socket.js")(ioHTTP, messageConstants, db);
 global.logger.info("Adding Socket Endpoints for HTTPS");
-require("./lib/socket.js")(ioHTTPS);
+require("./lib/socket.js")(ioHTTPS, messageConstants, db);
 
-//Add the Routes
-//global.logger.info("Adding Routes..");
-//require("./lib/routes.js");
+global.logger.info("RavenCrypt Server " + config.version + " Starting...");
 
 if (cluster.isMaster) {
     setUpMaster();
