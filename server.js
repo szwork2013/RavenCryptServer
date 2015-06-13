@@ -5,6 +5,7 @@ let sockio = require("socket.io");
 let tls = require('tls');
 let log4js = require('log4js');
 let Sequelize = require("sequelize");
+let fs = require('fs');
 
 let configJs = require("./config/config.js");
 let pjson = require("./package.json");
@@ -15,7 +16,7 @@ let config = new configJs.config();
 
 config.version = pjson.version;
 config.validations = require("./config/validations.js");
-let TLSOptions = require("./config/TSLOptions.js"); //private key file referenced here
+let TLSOptions = require("./config/TSLOptions.js")(config); //private key file referenced here
 
 let logger = require("./lib/logger.js")(config, log4js);
 //let helper = require("./lib/helper.js")(openpgp);
