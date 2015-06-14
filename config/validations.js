@@ -4,7 +4,7 @@
 //this is manly here for those that want to enforce stricter rules and regular expressions and might move out of the config folder altogether.
 
 //database field lengths are also based on this
-module.exports = function () {
+module.exports = function (config) {
     this.user = {};
     this.user.minLen = 3;
     this.user.maxLen = 40;
@@ -81,8 +81,6 @@ module.exports = function () {
     this.server.regExp =
         /(?=[\da-z-\.]{3,253}(\:.{1,5})?$)^\+?([\da-z]{1}([\da-z]{1}([\da-z]{1}([\da-z-]{1,59}([\da-z]{1}))?)?)?\.)+([a-z]{2,6})(\:(6553[0-5]|655[0-2]\d|65[0-4]\d\d|6[0-4]\d{3}|[1-5]\d{4}|[1-9]\d{0,3}))?$/;
 
-
-    var config = global.config;
 
     if (config.environment == config.enums.environmentModes.development ||
         config.environment == config.enums.environmentModes.productionTEST) {

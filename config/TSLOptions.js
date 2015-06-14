@@ -31,11 +31,11 @@
 //sign -> csr <- with the !ca key! to get our cert. normally your ssl vendor does this, but go ahead, if you know what your doing :-)
 //openssl x509 -req -days 365 -in rsa-csr.pem -CA ca-cert.pem -CAkey ca-key.pem -set_serial 01 -out rsa-cert.pem
 
-module.exports = function (config) {
+module.exports = function (config, fs) {
     let TLSOptions = {
     };
 
-    if (global.config.web.TLSMode == "RSA") {
+    if (config.web.TLSMode == "RSA") {
         TLSOptions = {
             key: fs.readFileSync("config/keys/ca-key.pem"),
             cert: fs.readFileSync("config/keys/ca-cert.pem"),
@@ -74,7 +74,7 @@ module.exports = function (config) {
     //openssl req -new -key ec-key.pem -x509 -nodes -days 365 -out ec-cert.pem
 
 
-    if (global.config.web.TLSMode == "EC") {
+    if (config.web.TLSMode == "EC") {
         TLSOptions = {
             key: fs.readFileSync("config/keys/ec-key.pem"),
             cert: fs.readFileSync("config/keys/ec-cert.pem"),

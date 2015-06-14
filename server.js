@@ -6,17 +6,18 @@ let tls = require('tls');
 let log4js = require('log4js');
 let Sequelize = require("sequelize");
 let fs = require('fs');
+var os = require('os');
+var path = require('path');
 
-let configJs = require("./config/config.js");
+let config = require("./config/config.js")(os, path);
 let pjson = require("./package.json");
-let config = new configJs.config();
 
 //let openpgp = require('openpgp');
 //require("./lib/pgpoptions.js")(openpgp,config);
 
 config.version = pjson.version;
-config.validations = require("./config/validations.js");
-let TLSOptions = require("./config/TSLOptions.js")(config); //private key file referenced here
+config.validations = require("./config/validations.js")(config);
+let TLSOptions = require("./config/TSLOptions.js")(config, fs); //private key file referenced here
 
 let logger = require("./lib/logger.js")(config, log4js);
 //let helper = require("./lib/helper.js")(openpgp);
@@ -25,15 +26,15 @@ let logger = require("./lib/logger.js")(config, log4js);
 //------------------Server Startup---------------------
 //-----------------------------------------------------
 
-global.logger.info("Setting up Database Connection..");
+logger.info("Setting up Database Connection..");
 let db = require("./lib/db.js")(config, Sequelize);
-global.logger.info("Defining Model.. ");
+logger.info("Defining Model.. ");
 let model = require("./lib/model.js")(config, db, Sequelize);
 
 //SocketIo
 let server = tls.createServer(options, function (cleartextStream) {
     /*
-     console.log('server connected',
+     console.log('server connected',1
      cleartextStream.authorized ? 'authorized' : 'unauthorized');
      //cleartextStream.write("welcome!\n");
      cleartextStream.setEncoding('utf8');*/
