@@ -27,7 +27,7 @@ let logger = require("./lib/logger.js")(config, log4js);
 //-----------------------------------------------------
 
 logger.info("Setting up Database Connection..");
-let db = require("./lib/db.js")(config, Sequelize);
+let db = require("./lib/db.js")(config, logger, Sequelize);
 logger.info("Defining Model.. ");
 let model = require("./lib/model.js")(config, db, Sequelize);
 
