@@ -32,25 +32,26 @@ logger.info("Defining Model.. ");
 let model = require("./lib/model.js")(config, db);
 
 //SocketIo
-let server = tls.createServer(options, function (cleartextStream) {
-    /*
-     console.log('server connected',1
-     cleartextStream.authorized ? 'authorized' : 'unauthorized');
-     //cleartextStream.write("welcome!\n");
-     cleartextStream.setEncoding('utf8');*/
-    cleartextStream.pipe(cleartextStream);
-});
+let TLSServer = tls.createServer(TLSOptions);
+//let server = tls.createServer(TLSOptions, function (cleartextStream) {
+//    /*
+//     console.log('server connected',1
+//     cleartextStream.authorized ? 'authorized' : 'unauthorized');
+//     //cleartextStream.write("welcome!\n");
+//     cleartextStream.setEncoding('utf8');*/
+//    cleartextStream.pipe(cleartextStream);
+//});
 
 let ioHTTP = sockio();
-let ioHTTPS = sockio.listen(server);
-let messageConstants = require("./lib/constants.Constantsjs");
+let ioHTTPS = sockio.listen(TLSServer);
+let constants = require("./lib/constants.js");
 
-global.logger.info("Adding Socket Endpoints for HTTP");
-require("./lib/socket.js")(ioHTTP, messageConstants, db);
-global.logger.info("Adding Socket Endpoints for HTTPS");
-require("./lib/socket.js")(ioHTTPS, messageConstants, db);
+logger.info("Adding Socket Endpoints for HTTP");
+require("./lib/socket.js")(ioHTTP, constants, db, logger, cluster);
+logger.info("Adding Socket Endpoints for HTTPS");
+require("./lib/socket.js")(ioHTTPS, constants, db, logger, cluster);
 
-global.logger.info("RavenCrypt Server " + config.version + " Starting...");
+logger.info("RavenCrypt Server " + config.version + " Starting...");
 
 if (cluster.isMaster) {
     setUpMaster();
@@ -208,7 +209,7 @@ function startServer() {
         //server.listen(config.web.portHTTPS, function() {
         //    console.log('server bound');
         //});
-        server.listen(config.web.portHTTPS);
+        TLSServer.listen(config.web.portHTTPS);
 
         global.logger.info(workerID + "RavenCrypt Server Server listening on https://127.0.0.1:" + config.web.portHTTPS + " and http://127.0.0.1:" + config.web.portHTTP);
 
