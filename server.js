@@ -46,6 +46,8 @@ let ioHTTP = sockio();
 let ioHTTPS = sockio.listen(TLSServer);
 let constants = require("./lib/constants.js");
 
+let masterJobs = null;
+
 logger.info("Adding Socket Endpoints for HTTP");
 require("./lib/socket.js")(ioHTTP, constants, db, logger, cluster);
 logger.info("Adding Socket Endpoints for HTTPS");
@@ -107,10 +109,10 @@ function setUpMaster() {
             process.exit();
         }
 
-        global.logger.info("Triggering Master SessionKey generation, for server start..");
-        global.session.updateKeys(function (err) {
+        logger.info("Triggering Master SessionKey generation, for server start..");
+        session.updateKeys(function (err) {
             if (err) {
-                global.logger.error(err);
+                logger.error(err);
                 process.exit(-1);
             }
 
@@ -137,34 +139,19 @@ function setUpMaster() {
 }
 
 function setUpWorker() {
-
     process.on('message', function (msg) {
-        if (msg == "updateServerSessionKeys")
-            global.logger.info("Master requested SessionKey update, syncing now!");
-        global.session.updateKeys(function (err) {
-            if (err)
-                global.logger.error(err);
-        });
-    });
-
-
-    global.logger.info("Triggering Worker SessionKey update, for server start..");
-    global.session.updateKeys(function (err) {
-        if (err) {
-            global.logger.error(err);
-            process.exit(-1);
+        if (msg == "example") {
+            logger.info("Master send us an example, shiny!");
         }
-        finishSetup();
+        ;
     });
 
-    function finishSetup() {
-        //enable logger after master initialization is done
-        global.logger.setLevel(require('log4js').levels.TRACE);
+    //enable logger after master initialization is done
+    logger.setLevel(require('log4js').levels.TRACE);
 
-        // Workers can share any TCP connection
-        //means, multiple server instances listening on the same port, sharing the load. :-)
-        startServer();
-    }
+    // Workers can share any TCP connection
+    //means, multiple server instances listening on the same port, sharing the load. :-)
+    startServer();
 }
 
 function setUp(callback) {
@@ -172,12 +159,12 @@ function setUp(callback) {
     //if successful the server will start
     if (config.environment == config.enums.environmentModes.development ||
         config.environment == config.enums.environmentModes.productionTEST) {
-        global.logger.info("Trying to syncing underlying Database Schema with Object Model..");
-        global.db.sequelize
+        logger.info("Trying to syncing underlying Database Schema with Object Model..");
+        db.sequelize
             .sync({force: config.development.forceSyncModel}).then(function onFulfilment() {
                 startJobs();
             },function onError(err) {
-                global.logger.log("Could not Sync Model: \n" + err);
+                logger.log("Could not Sync Model: \n" + err);
                 throw err;
             });
     } else {
@@ -188,8 +175,8 @@ function setUp(callback) {
     }
 
     function startJobs() {
-        global.logger.info("Queuing and starting Jobs..!");
-        global.masterJobs = require("./lib/masterJobs.js");
+        logger.info("Queuing and starting Jobs..!");
+        masterJobs = require("./lib/masterJobs.js");
         callback(null);
     }
 }

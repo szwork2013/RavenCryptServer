@@ -18,3 +18,7 @@
 #logs and analytics
 /logs/
 /analytics.json
+
+#configs
+/config/config.js
+/config/config.json
