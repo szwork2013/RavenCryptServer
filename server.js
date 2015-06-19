@@ -109,32 +109,24 @@ function setUpMaster() {
             process.exit();
         }
 
-        logger.info("Triggering Master SessionKey generation, for server start..");
-        session.updateKeys(function (err) {
-            if (err) {
-                logger.error(err);
-                process.exit(-1);
+        //next step is either to fork our workers or start our master itself as a worker
+        if (config.environment == config.enums.environmentModes.development ||
+            config.environment == config.enums.environmentModes.test) {
+
+            //if we are in these test environments the server will also start as a worker so we can debug it
+            setUpWorker();
+
+        } else {
+            //we are in a production environment, lets start our workers!
+
+            var numForks = getNumForks();
+
+            // Fork workers.
+            for (var i = 0; i < numForks; i++) {
+                global.logger.info("worker " + i + " forked")
+                cluster.fork();
             }
-
-            //next step is either to fork our workers or start our master itself as a worker
-            if (config.environment == config.enums.environmentModes.development ||
-                config.environment == config.enums.environmentModes.test) {
-
-                //if we are in these test environments the server will also start as a worker so we can debug it
-                setUpWorker();
-
-            } else {
-                //we are in a production environment, lets start our workers!
-
-                var numForks = getNumForks();
-
-                // Fork workers.
-                for (var i = 0; i < numForks; i++) {
-                    global.logger.info("worker " + i + " forked")
-                    cluster.fork();
-                }
-            }
-        });
+        }
     });
 }
 
@@ -198,10 +190,10 @@ function startServer() {
         //});
         TLSServer.listen(config.web.portHTTPS);
 
-        global.logger.info(workerID + "RavenCrypt Server Server listening on https://127.0.0.1:" + config.web.portHTTPS + " and http://127.0.0.1:" + config.web.portHTTP);
+        logger.info(workerID + "RavenCrypt Server Server listening on https://127.0.0.1:" + config.web.portHTTPS + " and http://127.0.0.1:" + config.web.portHTTP);
 
     } catch (err) {
-        global.logger.info("Couldn't start Server:" + err);
+        logger.info("Couldn't start Server:" + err);
         throw err;
     }
 }
