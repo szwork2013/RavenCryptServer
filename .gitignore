@@ -13,7 +13,7 @@
 /RavenCryptTest.sqlite
 
 #UploadedFiles
-/files/*/*
+files/*/*
 
 #logs and analytics
 /logs/
@@ -22,5 +22,4 @@
 #configs
 config/config.js
 config/config.json
-/config/config.js
-/config/config.json
+config/TSLOptions.js
