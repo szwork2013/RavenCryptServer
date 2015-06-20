@@ -20,5 +20,7 @@
 /analytics.json
 
 #configs
+config/config.js
+config/config.json
 /config/config.js
 /config/config.json
