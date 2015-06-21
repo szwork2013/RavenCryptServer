@@ -8,6 +8,7 @@ let Sequelize = require("sequelize");
 let fs = require('fs');
 var os = require('os');
 var path = require('path');
+var tooBusy = require('toobusy-js');
 
 let config = require("./config/config.js")(os, path);
 let pjson = require("./package.json");
@@ -49,9 +50,9 @@ let constants = require("./lib/constants.js");
 let masterJobs = null;
 
 logger.info("Adding Socket Endpoints for HTTP");
-require("./lib/socket.js")(ioHTTP, constants, db, logger, cluster);
+require("./lib/socket.js")(config, ioHTTP, constants, db, logger, cluster, tooBusy, model);
 logger.info("Adding Socket Endpoints for HTTPS");
-require("./lib/socket.js")(ioHTTPS, constants, db, logger, cluster);
+require("./lib/socket.js")(config, ioHTTPS, constants, db, logger, cluster, tooBusy, model);
 
 logger.info("RavenCrypt Server " + config.version + " Starting...");
 
