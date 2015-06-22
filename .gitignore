@@ -23,3 +23,6 @@ files/*/*
 config/config.js
 config/config.json
 config/TSLOptions.js
+/config/config.js
+/config/config.json
+/config/TSLOptions.js

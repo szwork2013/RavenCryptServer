@@ -6,12 +6,16 @@ let tls = require('tls');
 let log4js = require('log4js');
 let Sequelize = require("sequelize");
 let fs = require('fs');
-var os = require('os');
-var path = require('path');
-var tooBusy = require('toobusy-js');
+let os = require('os');
+let path = require('path');
+let tooBusy = require('toobusy-js');
 
 let config = require("./config/config.js")(os, path);
 let pjson = require("./package.json");
+
+//todo
+let routes = require('routes');
+
 
 //let openpgp = require('openpgp');
 //require("./lib/pgpoptions.js")(openpgp,config);
