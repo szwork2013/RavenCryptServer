@@ -13,10 +13,6 @@ let tooBusy = require('toobusy-js');
 let config = require("./config/config.js")(os, path);
 let pjson = require("./package.json");
 
-//todo
-let routes = require('routes');
-
-
 //let openpgp = require('openpgp');
 //require("./lib/pgpoptions.js")(openpgp,config);
 
@@ -53,10 +49,13 @@ let constants = require("./lib/constants.js");
 
 let masterJobs = null;
 
+
+let routes = require('./lib/routes.js');
+
 logger.info("Adding Socket Endpoints for HTTP");
-require("./lib/socket.js")(config, ioHTTP, constants, db, logger, cluster, tooBusy, model);
+require("./lib/socket.js")(config, ioHTTP, constants, db, logger, cluster, tooBusy, model, routes);
 logger.info("Adding Socket Endpoints for HTTPS");
-require("./lib/socket.js")(config, ioHTTPS, constants, db, logger, cluster, tooBusy, model);
+require("./lib/socket.js")(config, ioHTTPS, constants, db, logger, cluster, tooBusy, model, routes);
 
 logger.info("RavenCrypt Server " + config.version + " Starting...");
 
