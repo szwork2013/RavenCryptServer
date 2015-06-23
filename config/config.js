@@ -13,19 +13,17 @@ let enums = {
     }
 };
 
-module.exports = function (os, path, overrideEnviron) {
-    var config = {};
-
+exports.Config = function Config(os, path, overrideEnviron) {
     //gets filled from package.json
-    config.version = null;
+    this.version = null;
 
     // Run Modes ('development', test', 'production')
-    config.environment = enums.environmentModes.development;
+    this.environment = enums.environmentModes.development;
 
     //set to 'production' for a real world server
-    //these are CLUSTERED modes. you need to set up redis for config
-    //config.environment = enums.environmentModes.productionTEST;
-    //config.environment = enums.environmentModes.production;
+    //these are CLUSTERED modes. you need to set up redis for this
+    //this.environment = enums.environmentModes.productionTEST;
+    //this.environment = enums.environmentModes.production;
 
     //IMPORTANT:
     //If you do clustering you need to setup redis!!
@@ -34,86 +32,85 @@ module.exports = function (os, path, overrideEnviron) {
     //If you do clustering you need to setup redis!!
     //see redis.json
 
-    //number of clustered processes to spawn. config should be the number of CPUs you want to handle incoming connections.
+    //number of clustered processes to spawn. this should be the number of CPUs you want to handle incoming connections.
     //usually you do not want all of them to work on NodeJS, because you need some of them for the DataBase etc.
-    config.numForks = null; //null = automatic detection, half the CPUs of the server by default
+    this.numForks = null; //null = automatic detection, half the CPUs of the server by default
 
-    config.dbType = null;
+    this.dbType = null;
 
-    config.development = {};
-    config.development.forceSyncModel = false; //works only in development mode
+    this.development = {};
+    this.development.forceSyncModel = false; //works only in development mode
 
-    config.web = {};
-    config.log = {};
+    this.web = {};
+    this.log = {};
 
-    config.web.portHTTPS = 1338;
-    config.web.portHTTP = 13380;
+    this.web.portHTTPS = 1338;
+    this.web.portHTTP = 13380;
 
-    if (config.web.portHTTPS != 443)
-        config.web.serverName = config.web.hostname + ":" + config.web.portHTTPS;
+    if (this.web.portHTTPS != 443)
+        this.web.serverName = this.web.hostname + ":" + this.web.portHTTPS;
     else
-        config.web.serverName = config.web.hostname;
+        this.web.serverName = this.web.hostname;
 
-    config.web.TLSMode = "RSA"; // possible: EC/RSA; (EC = Elliptic Curve)
+    this.web.TLSMode = "RSA"; // possible: EC/RSA; (EC = Elliptic Curve)
 
 
-    config.log.enabled = true; //turn of ANY logging.. including startup!
-    config.log.DBenabled = false; //turns of db logging
-    config.log.file = false; //write log to file
-    config.log.errorData = true; //log error data, very useful for developers.
-    config.log.inputData = true; //logs input data, very useful for developers.
-    config.log.user = true; //logs user, useful for developers.
-    config.log.ip = true; //logs ips, useful but less anonymous
+    this.log.enabled = true; //turn of ANY logging.. including startup!
+    this.log.DBenabled = false; //turns of db logging
+    this.log.file = false; //write log to file
+    this.log.errorData = true; //log error data, very useful for developers.
+    this.log.inputData = true; //logs input data, very useful for developers.
+    this.log.user = true; //logs user, useful for developers.
+    this.log.ip = true; //logs ips, useful but less anonymous
     //note on ips: the db also keeps track of ips on certain items, that can be input anonymously, which can not be turned off.
     //RC is intended to leak no metadata, but ips are intended to be a tool in the battle against SPAM, so we can BULK DELETE spam.
     //might be an issue for TOR users, but there is no other particle way.
 
 
     //Path for logs
-    config.logPath = path.dirname(process.mainModule.filename) + "/logs/";
+    this.logPath = path.dirname(process.mainModule.filename) + "/logs/";
 
     //Path for Uploaded files.
-    config.filePath = path.dirname(process.mainModule.filename) + "/files/";
+    this.filePath = path.dirname(process.mainModule.filename) + "/files/";
 
-    config.session = {};
-    config.session.KeyRenewInterval = 32; //Interval is in Days!
+    this.session = {};
+    this.session.KeyRenewInterval = 32; //Interval is in Days!
 
     //Interval is in Days!
-    config.userMsg = {};
-    config.userMsg.cleanupInterval = 30;
+    this.userMsg = {};
+    this.userMsg.cleanupInterval = 30;
 
-    config.upload = {};
-    config.upload.maxSize = 1024 * 1024 * 2;
+    this.upload = {};
+    this.upload.maxSize = 1024 * 1024 * 2;
 
-    //config data doesn't need to be exposed, but should be.
+    //this data doesn't need to be exposed, but should be.
     //I would love to know what OS my communication server runs and if its updated or not
-    //config MIGHT however cause a danger for people who NEVER update their system..
+    //this MIGHT however cause a danger for people who NEVER update their system..
     //if your one of those i probably don't want to let you host my server anyway. :)
-    config.os = {};
-    config.os.type = os.type();
-    config.os.platform = os.platform();
-    config.os.arch = os.arch();
-    config.os.release = os.release();
+    this.os = {};
+    this.os.type = os.type();
+    this.os.platform = os.platform();
+    this.os.arch = os.arch();
+    this.os.release = os.release();
 
     if (overrideEnviron) {
-        config.environment = overrideEnviron;
+        this.environment = overrideEnviron;
     }
 
-    config.isTestEnvironment = function () {
+    this.isTestEnvironment = function () {
         return (
-            config.environment == enums.environmentModes.test ||
-            config.environment == enums.environmentModes.development ||
-            config.environment == enums.environmentModes.productionTEST
+            this.environment == enums.environmentModes.test ||
+            this.environment == enums.environmentModes.development ||
+            this.environment == enums.environmentModes.productionTEST
             );
     };
 
-    if (config.environment != enums.environmentModes.development &&
-        config.environment != enums.environmentModes.productionTEST) {
-        //if not in development mode, delete the development namespace from config
-        delete config.development;
+    if (this.environment != enums.environmentModes.development &&
+        this.environment != enums.environmentModes.productionTEST) {
+        //if not in development mode, delete the development namespace from this
+        delete this.development;
     }
 
-    config.enums = enums;
+    this.enums = enums;
 
-    return config;
 };

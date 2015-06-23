@@ -10,15 +10,19 @@ let os = require('os');
 let path = require('path');
 let tooBusy = require('toobusy-js');
 
-let config = require("./config/config.js")(os, path);
+let Config = require("./config/config.js").Config;
+let config = new Config(os, path);
+
 let pjson = require("./package.json");
 
 //let openpgp = require('openpgp');
 //require("./lib/pgpoptions.js")(openpgp,config);
 
 config.version = pjson.version;
-config.validations = require("./config/validations.js")(config);
-let TLSOptions = require("./config/TSLOptions.js")(config, fs); //private key file referenced here
+let Validations = require("./config/validations.js").Validations;
+config.validations = new Validations(config);
+let TLSOptions = require("./config/TSLOptions.js").TLSOptions;
+let tlsOptions = new TLSOptions(config, fs);
 
 let logger = require("./lib/logger.js")(config, log4js);
 //let helper = require("./lib/helper.js")(openpgp);
@@ -33,8 +37,8 @@ logger.info("Defining Model.. ");
 let model = require("./lib/model.js")(config, db);
 
 //SocketIo
-let TLSServer = tls.createServer(TLSOptions);
-//let server = tls.createServer(TLSOptions, function (cleartextStream) {
+let TLSServer = tls.createServer(tlsOptions);
+//let server = tls.createServer(tlsOptions, function (cleartextStream) {
 //    /*
 //     console.log('server connected',1
 //     cleartextStream.authorized ? 'authorized' : 'unauthorized');
@@ -45,10 +49,12 @@ let TLSServer = tls.createServer(TLSOptions);
 
 let ioHTTP = sockio();
 let ioHTTPS = sockio.listen(TLSServer);
-let constants = require("./lib/constants.js");
+let Constants = require("./lib/constants.js").Constants;
+let constants = new Constants();
+let Errors = require("./lib/errors.js").Errors;
+let errors = new Errors(constants);
 
 let masterJobs = null;
-
 
 let routes = require('./lib/routes.js');
 
@@ -66,6 +72,7 @@ if (cluster.isMaster) {
     //worker
     setUpWorker();
 }
+
 
 function getNumForks() {
     if (config.numForks)
