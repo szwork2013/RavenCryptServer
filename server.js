@@ -18,6 +18,7 @@ let pjson = require("./package.json");
 //let openpgp = require('openpgp');
 //require("./lib/pgpoptions.js")(openpgp,config);
 
+
 config.version = pjson.version;
 let Validations = require("./config/validations.js").Validations;
 config.validations = new Validations(config);
@@ -179,7 +180,10 @@ function setUp(callback) {
 
     function startJobs() {
         logger.info("Queuing and starting Jobs..!");
-        masterJobs = require("./lib/masterJobs.js");
+
+        let cron = require('cron');
+        let MasterJobs = require("./lib/masterJobs.js").MasterJobs;
+        masterJobs = new MasterJobs(config, model, logger, cron);
         callback(null);
     }
 }
