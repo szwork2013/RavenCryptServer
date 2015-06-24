@@ -20,10 +20,8 @@ let pjson = require("./package.json");
 
 
 config.version = pjson.version;
-let Validations = require("./config/validations.js").Validations;
-config.validations = new Validations(config);
-let TLSOptions = require("./config/TSLOptions.js").TLSOptions;
-let tlsOptions = new TLSOptions(config, fs);
+config.validations = new (require("./config/validations.js")).Validations(config);
+let tlsOptions = new (require("./config/TSLOptions.js")).TLSOptions(config, fs);
 
 let logger = require("./lib/logger.js")(config, log4js);
 //let helper = require("./lib/helper.js")(openpgp);
@@ -50,10 +48,8 @@ let TLSServer = tls.createServer(tlsOptions);
 
 let ioHTTP = sockio();
 let ioHTTPS = sockio.listen(TLSServer);
-let Constants = require("./lib/constants.js").Constants;
-let constants = new Constants();
-let Errors = require("./lib/errors.js").Errors;
-let errors = new Errors(constants);
+let constants = new (require("./lib/constants.js")).Constants();
+let errors = new (require("./lib/errors.js")).Errors(constants);
 
 let masterJobs = null;
 
@@ -73,7 +69,6 @@ if (cluster.isMaster) {
     //worker
     setUpWorker();
 }
-
 
 function getNumForks() {
     if (config.numForks)
