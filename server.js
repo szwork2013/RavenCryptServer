@@ -31,12 +31,15 @@ let logger = require("./lib/logger.js")(config, log4js);
 //-----------------------------------------------------
 
 logger.info("Setting up Database Connection..");
-let db = new (require("./lib/db.js")).DB(config, logger, Sequelize);
+let sequelize = require("./lib/db.js")(config, logger, Sequelize);
 logger.info("Defining Model.. ");
-let model = new (require("./lib/model.js")).Model(config, db);
 
-//broken!
-console.log(model.UserKey);
+let model = {
+    User: new (require("./lib/model/User.js"))(Sequelize, sequelize, config),
+    UserKey: new (require("./lib/model/UserKey.js"))(Sequelize, sequelize, config),
+    UserMessage: new (require("./lib/model/UserMessage.js"))(Sequelize, sequelize, config),
+    UserStorage: new (require("./lib/model/UserStorage.js"))(Sequelize, sequelize, config)
+};
 
 //SocketIo
 let TLSServer = tls.createServer(tlsOptions);
@@ -59,9 +62,9 @@ let masterJobs = null;
 let routes = require('./lib/routes.js');
 
 logger.info("Adding Socket Endpoints for HTTP");
-require("./lib/socket.js")(config, ioHTTP, constants, db, logger, cluster, tooBusy, model, routes);
+require("./lib/socket.js")(config, ioHTTP, constants, sequelize, Sequelize, logger, cluster, tooBusy, model, routes);
 logger.info("Adding Socket Endpoints for HTTPS");
-require("./lib/socket.js")(config, ioHTTPS, constants, db, logger, cluster, tooBusy, model, routes);
+require("./lib/socket.js")(config, ioHTTPS, constants, sequelize, Sequelize, logger, cluster, tooBusy, model, routes);
 
 logger.info("RavenCrypt Server " + config.version + " Starting...");
 
@@ -162,7 +165,7 @@ function setUp(callback) {
     if (config.environment == config.enums.environmentModes.development ||
         config.environment == config.enums.environmentModes.productionTEST) {
         logger.info("Trying to syncing underlying Database Schema with Object Model..");
-        db.sequelize
+        sequelize
             .sync({force: config.development.forceSyncModel}).then(function onFulfilment() {
                 startJobs();
             },function onError(err) {
