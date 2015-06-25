@@ -31,9 +31,12 @@ let logger = require("./lib/logger.js")(config, log4js);
 //-----------------------------------------------------
 
 logger.info("Setting up Database Connection..");
-let db = require("./lib/db.js")(config, logger, Sequelize);
+let db = new (require("./lib/db.js")).DB(config, logger, Sequelize);
 logger.info("Defining Model.. ");
-let model = require("./lib/model.js")(config, db);
+let model = new (require("./lib/model.js")).Model(config, db);
+
+//broken!
+console.log(model.UserKey);
 
 //SocketIo
 let TLSServer = tls.createServer(tlsOptions);
