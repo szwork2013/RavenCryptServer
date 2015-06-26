@@ -77,12 +77,13 @@ if (cluster.isMaster) {
 }
 
 function getNumForks() {
-    if (config.numForks)
+    if (config.numForks) {
         return config.numForks;
+    }
 
     //use half the number of CPUs present
-    var numCPUs = require('os').cpus().length;
-    var numThreads = parseInt(numCPUs / 2);
+    let numCPUs = require('os').cpus().length;
+    let numThreads = parseInt(numCPUs / 2);
     //use at least one CPU, otherwise this makes no sense :)
     if (numThreads == 0) {
         numThreads = 1;
@@ -97,7 +98,7 @@ function setUpMaster() {
     cluster.on('exit', function (worker, code, signal) {
         if (worker.suicide)
             return; //worker was killed for a reason, do not restart
-        var exitCode = worker.process.exitCode;
+        let exitCode = worker.process.exitCode;
         console.log('worker ' + worker.process.pid + ' died (' + exitCode + '). restarting...');
         cluster.fork();
     });
@@ -105,7 +106,7 @@ function setUpMaster() {
     //make sure, if the main process exits, we kill all workers
     process.on('exit', function () {
         function eachWorker(callback) {
-            for (var id in cluster.workers) {
+            for (let id in cluster.workers) {
                 callback(cluster.workers[id]);
             }
         }
