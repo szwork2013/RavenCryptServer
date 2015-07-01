@@ -18,12 +18,12 @@ let pjson = require("./package.json");
 //let openpgp = require('openpgp');
 //require("./lib/pgpoptions.js")(openpgp,config);
 
-
 config.version = pjson.version;
 config.validations = new (require("./config/validations.js")).Validations(config);
-let tlsOptions = new (require("./config/TSLOptions.js")).TLSOptions(config, fs);
 
+let tlsOptions = new (require("./config/TSLOptions.js")).TLSOptions(config, fs);
 let logger = require("./lib/logger.js")(config, log4js);
+
 //let helper = require("./lib/helper.js")(openpgp);
 
 //-----------------------------------------------------
